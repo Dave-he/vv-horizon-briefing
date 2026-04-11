@@ -1,21 +1,33 @@
 # {title}
 
-> Source: {source_type} · {sub_source} | Score: {score}/10 | {published_time}
-> Original: {url}
+> 来源: {source_type} · {sub_source} | 评分: {score}/10 | {published_time}
+> 原文: {url}
 
-## Core Content
+## 摘要
+
+{abstract}
+
+## 核心内容
 
 {detailed_summary}
 
-## Technical Background
+## 技术背景
 
 {background_analysis}
 
-## Impact & Significance
+## 方法与实现
+
+{methods_analysis}
+
+## 影响与意义
 
 {impact_analysis}
 
-## Community Discussion
+## 前景展望
+
+{prospects_analysis}
+
+## 社区讨论
 
 {community_discussion}
 
