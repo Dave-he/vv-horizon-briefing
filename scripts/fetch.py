@@ -726,7 +726,7 @@ def merge_cross_source_duplicates(items: List[ContentItem]) -> List[ContentItem]
 # run_fetch — main async logic
 # ---------------------------------------------------------------------------
 
-async def run_fetch(config_path: Path) -> None:
+async def run_fetch(config_path: Path, days: int | None = None) -> None:
     config = load_config(config_path)
     output_dir = config_path.parent
 
@@ -734,7 +734,7 @@ async def run_fetch(config_path: Path) -> None:
     output_cfg = config.get("output", {})
     sources_cfg = config.get("sources", {})
 
-    time_window_hours = filtering.get("time_window_hours", 24)
+    time_window_hours = days * 24 if days is not None else filtering.get("time_window_hours", 24)
     since = datetime.now(timezone.utc) - timedelta(hours=time_window_hours)
 
     logger.info("Fetching content since %s (%dh window)", since.strftime("%Y-%m-%d %H:%M UTC"), time_window_hours)
@@ -816,10 +816,16 @@ def main() -> None:
         default=Path("config.json"),
         help="Path to config.json (default: config.json in cwd)",
     )
+    parser.add_argument(
+        "--days",
+        type=int,
+        default=None,
+        help="Fetch content from last N days (overrides time_window_hours in config)",
+    )
     args = parser.parse_args()
 
     try:
-        asyncio.run(run_fetch(args.config))
+        asyncio.run(run_fetch(args.config, days=args.days))
     except KeyboardInterrupt:
         logger.info("Interrupted.")
         sys.exit(0)
